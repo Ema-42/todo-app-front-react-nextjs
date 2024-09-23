@@ -1,40 +1,53 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import { fetcher } from "@/common/util/fetcher";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { FaCamera, FaEye, FaEyeSlash } from "react-icons/fa";
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  occupation: string;
-  role: string;
-  created_at: Date;
-  image: string | ArrayBuffer | null;
-  password: string;
-}
+import { useSession } from "next-auth/react";
+import { User } from "@/common/interface/User.interface";
 
 export default function Perfil() {
   const [user, setUser] = useState<User>({
-    id: 1,
-    firstName: "Juan",
-    lastName: "Pérez",
-    email: "juan.perez@example.com",
-    occupation: "Desarrollador Full Stack",
-    role: "Usuario",
-    created_at: new Date("2023-01-15"),
-    image: "/profile.png",
-    password: "********",
+    id: 0,
+    firstName: "",
+    lastName: "",
+    email: "",
+    ocupation: "",
+    role: "",
+    deletedAt: new Date(),
+    created_at: new Date(),
   });
+  const { data: session, status } = useSession();
+
+/*   const getUser = async () => {
+    try {
+      // Aquí llamamos a fetcher y le pasamos la URL y el token
+      const data = await fetcher(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/9`,
+        session?.user?.token || ""
+      );
+      setUser(data);
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      getUser();
+    }
+  }, [status]); */
 
   const [editing, setEditing] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  /*   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -43,7 +56,7 @@ export default function Perfil() {
       };
       reader.readAsDataURL(file);
     }
-  };
+  }; */
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -70,11 +83,7 @@ export default function Perfil() {
 
           <div className="mb-6 flex justify-center">
             <div className="relative">
-              <img
-                src={user.image as string}
-                alt={`${user.firstName} ${user.lastName}`}
-                className="w-32 h-32 rounded-full object-cover"
-              />
+              <img src="" className="w-32 h-32 rounded-full object-cover" />
               {editing && (
                 <label
                   htmlFor="image-upload"
@@ -85,7 +94,7 @@ export default function Perfil() {
                     id="image-upload"
                     type="file"
                     accept="image/*"
-                    onChange={handleImageChange}
+                    /* onChange={handleImageChange} */
                     className="hidden"
                   />
                 </label>
@@ -106,7 +115,7 @@ export default function Perfil() {
                   type="text"
                   id="firstName"
                   name="firstName"
-                  value={user.firstName}
+                  value={user?.firstName}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -124,7 +133,7 @@ export default function Perfil() {
                   type="text"
                   id="lastName"
                   name="lastName"
-                  value={user.lastName}
+                  value={user?.lastName}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -142,7 +151,7 @@ export default function Perfil() {
                   type="email"
                   id="email2"
                   name="email"
-                  value={user.email}
+                  value={user?.email}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -160,7 +169,7 @@ export default function Perfil() {
                   type="text"
                   id="occupation"
                   name="occupation"
-                  value={user.occupation}
+                  value={user?.ocupation}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -178,7 +187,7 @@ export default function Perfil() {
                   type="text"
                   id="role"
                   name="role"
-                  value={user.role}
+                  value={user?.role}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -196,7 +205,7 @@ export default function Perfil() {
                   type="date"
                   id="created_at"
                   name="created_at"
-                  value={user.created_at.toISOString().split("T")[0]}
+                  value={user?.created_at.toISOString().split("T")[0]}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -217,7 +226,7 @@ export default function Perfil() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
-                    value={user.password}
+                    value="NO VISIBLE BRO"
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                     placeholder="Ingresa la nueva contraseña"

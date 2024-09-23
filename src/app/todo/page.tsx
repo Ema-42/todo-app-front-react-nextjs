@@ -53,7 +53,6 @@ export default function TodosPage() {
     }
   };
 
-  // useEffect para llamar getTodos cada 4 segundos
   useEffect(() => {
     if (status === "authenticated") {
       getTodos();
@@ -63,7 +62,7 @@ export default function TodosPage() {
       // Limpiar el intervalo cuando el componente se desmonte
       return () => clearInterval(interval);
     }
-  }, [status]); // Se ejecuta cuando el estado de la sesión cambia
+  }, [status]);
 
   if (status === "loading") {
     return <p>Cargando tareas...</p>;
