@@ -132,7 +132,7 @@ export default function page() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 md:mb-0">
-              © 2023 TaskMaster. Todos los derechos reservados.
+              © 2023 TaskApp. Todos los derechos reservados.
             </p>
             <div className="grid grid-cols-2 gap-4 sm:flex md:flex md:space-x-6">
               <a
