@@ -1,29 +1,46 @@
-import React, { useState } from 'react';
-import { FaUser, FaEnvelope, FaBriefcase, FaUserTag, FaCalendarAlt, FaEdit, FaCamera, FaEye, FaEyeSlash } from 'react-icons/fa';
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import {
+  FaCamera,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+
+interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  occupation: string;
+  role: string;
+  created_at: Date;
+  image: string | ArrayBuffer | null;
+  password: string;
+}
 
 export default function Perfil() {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<User>({
     id: 1,
-    firstName: 'Juan',
-    lastName: 'Pérez',
-    email: 'juan.perez@example.com',
-    occupation: 'Desarrollador Full Stack',
-    role: 'Usuario',
-    created_at: new Date('2023-01-15'),
-    image: '/profile.png',
-    password: '********'
+    firstName: "Juan",
+    lastName: "Pérez",
+    email: "juan.perez@example.com",
+    occupation: "Desarrollador Full Stack",
+    role: "Usuario",
+    created_at: new Date("2023-01-15"),
+    image: "/profile.png",
+    password: "********",
   });
+ 
 
-  const [editing, setEditing] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [editing, setEditing] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -33,11 +50,11 @@ export default function Perfil() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setEditing(false);
     // Aquí iría la lógica para guardar los cambios en el servidor
-    console.log('Usuario actualizado:', user);
+    console.log("Usuario actualizado:", user);
   };
 
   return (
@@ -45,24 +62,29 @@ export default function Perfil() {
       <div className="max-w-3xl mx-auto bg-white dark:bg-gray-700 shadow-md rounded-lg overflow-hidden">
         <div className="p-8">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Perfil de Usuario</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              Perfil de Usuario
+            </h1>
             <button
               onClick={() => setEditing(!editing)}
               className="px-4 py-2 bg-[#2560E5] text-white rounded-md hover:bg-[#1e4fc0] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2560E5] transition-colors duration-200"
             >
-              {editing ? 'Cancelar' : 'Editar Perfil'}
+              {editing ? "Cancelar" : "Editar Perfil"}
             </button>
           </div>
 
           <div className="mb-6 flex justify-center">
             <div className="relative">
               <img
-                src={user.image}
+                src={user.image as string}
                 alt={`${user.firstName} ${user.lastName}`}
                 className="w-32 h-32 rounded-full object-cover"
               />
               {editing && (
-                <label htmlFor="image-upload" className="absolute bottom-0 right-0 bg-white dark:bg-gray-600 rounded-full p-2 cursor-pointer">
+                <label
+                  htmlFor="image-upload"
+                  className="absolute bottom-0 right-0 bg-white dark:bg-gray-600 rounded-full p-2 cursor-pointer"
+                >
                   <FaCamera className="text-gray-600 dark:text-gray-300" />
                   <input
                     id="image-upload"
@@ -79,7 +101,10 @@ export default function Perfil() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Nombre
                 </label>
                 <input
@@ -94,7 +119,10 @@ export default function Perfil() {
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Apellido
                 </label>
                 <input
@@ -109,7 +137,10 @@ export default function Perfil() {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Email
                 </label>
                 <input
@@ -124,7 +155,10 @@ export default function Perfil() {
                 />
               </div>
               <div>
-                <label htmlFor="occupation" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="occupation"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Ocupación
                 </label>
                 <input
@@ -139,7 +173,10 @@ export default function Perfil() {
                 />
               </div>
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Rol
                 </label>
                 <input
@@ -154,14 +191,17 @@ export default function Perfil() {
                 />
               </div>
               <div>
-                <label htmlFor="created_at" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="created_at"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Fecha de Creación
                 </label>
                 <input
                   type="date"
                   id="created_at"
                   name="created_at"
-                  value={user.created_at.toISOString().split('T')[0]}
+                  value={user.created_at.toISOString().split("T")[0]}
                   onChange={handleInputChange}
                   disabled={!editing}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2560E5] focus:border-[#2560E5] dark:bg-gray-600 dark:border-gray-500 dark:text-white"
@@ -171,7 +211,10 @@ export default function Perfil() {
             </div>
             {editing && (
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Contraseña
                 </label>
                 <div className="relative">

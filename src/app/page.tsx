@@ -16,7 +16,7 @@ export default function page() {
   const router = useRouter();
 
  
-  useEffect(() => {
+/*   useEffect(() => {
     if (session) {
       router.push("/todo"); // Redirigir a /todo si está autenticado
     }
@@ -25,7 +25,7 @@ export default function page() {
 
   if (status === "loading") {
     return <p>Cargando tareas...</p>;
-  }
+  } */
 
   return (
     <div className="min-h-screen bg-[#E8F0FE] dark:bg-gray-800 text-gray-800 dark:text-gray-200">
