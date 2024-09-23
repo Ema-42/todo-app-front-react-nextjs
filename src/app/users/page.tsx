@@ -1,6 +1,6 @@
 "use client";
 import Perfil from "@/components/Perfil";
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { FaPlus, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const initialUsers = [
@@ -49,7 +49,7 @@ export default function UsersPage() {
     });
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewUser({ ...newUser, [name]: value });
   };
